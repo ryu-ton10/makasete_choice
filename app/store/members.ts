@@ -19,6 +19,11 @@ export const useMembersStore = defineStore('members', {
   getters: {
     totalMembers: (state) => {
       return state.members.length;
+    },
+    getMembersByGroup: (state) => {
+      return (groupId: number) => {
+        return state.members.filter(member => member.groupId === groupId);
+      };
     }
   }
 });
