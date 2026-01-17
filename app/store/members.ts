@@ -2,15 +2,15 @@ import { defineStore } from 'pinia';
 
 export const useMembersStore = defineStore('members', {
   state: () => ({
-    members: [] as Array<{ id: number; name: string; }>,
-    numberOfGroup: 0
+    members: [] as Array<{ groupId: number; name: string; }>,
+    numberOfGroup: 2
   }),
   actions: {
-    addMember(member: { id: number; name: string; }) {
+    addMember(member: { groupId: number; name: string; }) {
       this.members.push(member);
     },
-    removeMember(memberId: number) {
-      this.members = this.members.filter(member => member.id !== memberId);
+    removeMember(name: string) {
+      this.members = this.members.filter(member => member.name !== name);
     },
     changeNumberOfGroup(newNumber: number) {
       this.numberOfGroup = newNumber;

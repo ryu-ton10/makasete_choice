@@ -2,13 +2,13 @@
   import { useMembersStore } from './../store/members'
 
   const store = useMembersStore()
-  const members = ref<string[]>([])
+  const members = store.members
   const memberName = ref('')
   const numberOfGroup = ref()
 
   const handleMemberNameInput = (event: Event) => {
     console.log('Member name input value:', event);
-    store.addMember({ id: Date.now(), name: memberName.value });
+    store.addMember({ groupId: 0, name: memberName.value });
     memberName.value = '';
   };
 
@@ -20,13 +20,13 @@
 
 <template>
   <div v-for="member in members">
-    <p>{{ member }}</p>
+    <p>{{ member.name }}</p>
   </div>
   <p>メンバー名を入力</p>
   <UInput v-model="memberName" @keyup.enter="handleMemberNameInput"/>
   <p>組み分け数を選択</p>
   <UInputNumber v-model="numberOfGroup" :min="2" :max="members.length" :default-value="2" @change="handleNumberOfGroupChange" />
-  <NuxtLink to='/'>
+  <NuxtLink to='/result'>
     <UButton>チョイスする</UButton>
   </NuxtLink>
 </template>
