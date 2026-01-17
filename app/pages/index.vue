@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useMembersStore } from './../store/members'
+  import { shuffleMembers } from '~/interactor/shuffleinteractor'
 
   const store = useMembersStore()
   const members = store.members
@@ -26,7 +27,16 @@
   <UInput v-model="memberName" @keyup.enter="handleMemberNameInput"/>
   <p>組み分け数を選択</p>
   <UInputNumber v-model="numberOfGroup" :min="2" :max="members.length" :default-value="2" @change="handleNumberOfGroupChange" />
-  <NuxtLink to='/result'>
-    <UButton>チョイスする</UButton>
-  </NuxtLink>
+
+  <UButton @click="shuffleMembers">チョイスする</UButton>
+
+  <div v-for="group in store.numberOfGroup" class="mb-6">
+    <h2 class="text-xl font-bold mb-2">グループ {{ group }}</h2>
+    <ul class="list-disc list-inside">
+      <li v-for="member in store.getMembersByGroup(group)">
+        {{ member.name }}
+      </li>
+    </ul>
+  </div>
+  <p class="text-lg font-semibold">組み分け数: {{ numberOfGroup }}</p>
 </template>
