@@ -1,18 +1,20 @@
 <script setup lang="ts">
+  import { useMembersStore } from './../store/members'
+
+  const store = useMembersStore()
   const members = ref<string[]>([])
   const memberName = ref('')
   const numberOfGroup = ref()
 
   const handleMemberNameInput = (event: Event) => {
-    console.log('Member name input value:', memberName.value);
-    members.value.push(memberName.value);
+    console.log('Member name input value:', event);
+    store.addMember({ id: Date.now(), name: memberName.value });
     memberName.value = '';
   };
 
   const handleNumberOfGroupChange = (event: Event) => {
-    // Access the committed value
-    console.log('Change event value:', event);
-    console.log('Number of groups:', numberOfGroup.value);
+    console.log('Number of groups:', event);
+    store.changeNumberOfGroup(numberOfGroup.value);
   };
 </script>
 
