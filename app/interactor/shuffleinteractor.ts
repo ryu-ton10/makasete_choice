@@ -10,10 +10,10 @@ export const shuffleMembers = (): Array<{ groupId: number; name: string; }> => {
   // グループIDを振る
   let groupId = 1;
   for (let member of members) {
-    if (groupId > membersStore.numberOfGroup) {
-      groupId = 1;
-    } else {
       member.groupId = groupId;
+    if (groupId > membersStore.numberOfGroup - 1) {
+      groupId = 1;
+      continue;
     }
     groupId++;
   }

@@ -6,17 +6,22 @@
   const members = store.members
   const memberName = ref('')
   const numberOfGroup = ref()
+  let isInitialLoad = true
 
-  const handleMemberNameInput = (event: Event) => {
-    console.log('Member name input value:', event);
-    store.addMember({ groupId: 0, name: memberName.value });
+  const handleMemberNameInput = () => {
+    store.addMember({ groupId: 1, name: memberName.value });
     memberName.value = '';
   };
 
-  const handleNumberOfGroupChange = (event: Event) => {
-    console.log('Number of groups:', event);
+  const handleNumberOfGroupChange = () => {
     store.changeNumberOfGroup(numberOfGroup.value);
   };
+
+  const doShuffle = () => {
+    isInitialLoad = false;
+    shuffleMembers();
+  }
+
 </script>
 
 <template>
@@ -28,15 +33,17 @@
   <p>組み分け数を選択</p>
   <UInputNumber v-model="numberOfGroup" :min="2" :max="members.length" :default-value="2" @change="handleNumberOfGroupChange" />
 
-  <UButton @click="shuffleMembers">チョイスする</UButton>
+  <UButton @click="doShuffle">チョイスする</UButton>
 
-  <div v-for="group in store.numberOfGroup" class="mb-6">
-    <h2 class="text-xl font-bold mb-2">グループ {{ group }}</h2>
-    <ul class="list-disc list-inside">
-      <li v-for="member in store.getMembersByGroup(group)">
-        {{ member.name }}
-      </li>
-    </ul>
+  <div v-show="!isInitialLoad">
+    <div v-for="group in store.numberOfGroup" class="mb-6">
+      <h2 class="text-xl font-bold mb-2">グループ {{ group }}</h2>
+      <ul class="list-disc list-inside">
+        <li v-for="member in store.getMembersByGroup(group)">
+          {{ member.name }}
+        </li>
+      </ul>
+    </div>
+    <p class="text-lg font-semibold">組み分け数: {{ store.numberOfGroup }}</p>
   </div>
-  <p class="text-lg font-semibold">組み分け数: {{ numberOfGroup }}</p>
 </template>
